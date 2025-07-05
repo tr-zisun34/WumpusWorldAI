@@ -44,23 +44,38 @@ def run_gui_simulation():
     pygame.display.set_caption("Wumpus World AI")
 
     env = Environment(size=10)
+    env.generate_random()
     agent = Agent(env)
 
     clock = pygame.time.Clock()
     running = True
+    paused = False
 
     while running:
-        screen.fill((255, 255, 255))
-        draw_grid(screen, env, agent)
-        pygame.display.flip()
-        pygame.time.delay(500)
-        agent.act()
-        running = False  # Run once (no step-by-step mode for now)
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        clock.tick(1)
+        screen.fill((255, 255, 255))
+        draw_grid(screen, env, agent)
+        pygame.display.flip()
+
+        if not paused:
+            percepts = agent.perceive()
+            print(f"At ({agent.x}, {agent.y}) perceives: {percepts}")
+            if percepts["glitter"] and not agent.gold_collected:
+                print(f"Gold found at ({agent.x}, {agent.y})! Collecting...")
+                agent.gold_collected = True
+                agent.backtrack_to_start()
+                paused = True
+            elif percepts["stench"] and not agent.arrow_used:
+                agent.shoot_arrow()
+            else:
+                moved = agent.move()
+                if not moved:
+                    print("No more safe moves. Agent stops.")
+                    paused = True
+
+        clock.tick(1)  # 1 frame per second
 
     pygame.quit()
