@@ -15,4 +15,10 @@ This project simulates a logical AI agent navigating a 10x10 Wumpus World, enhan
 
 Developed by **BanglaReboot** for **CSE604 AI Project 2**.  
 
+
+
+venv\Scripts\activate  
+
+pip install -r requirements.txt
+
 python ./Source/main.py
