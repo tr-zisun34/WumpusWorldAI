@@ -12,14 +12,14 @@ from Algorithms import *
 # Enhanced color palette for consistent styling
 @dataclass
 class GameColors:
-    PRIMARY = (48, 25, 52)
+    PRIMARY = (7,15,43)  # Navy blue
     SECONDARY = (101, 67, 133)
     ACCENT = (255, 195, 0)
-    BACKGROUND = (24, 12, 26)
+    BACKGROUND = (7,15,43)   # Navy blue
     TEXT_PRIMARY = (255, 255, 255)
     TEXT_SECONDARY = (180, 180, 180)
-    BUTTON_HOVER = (143, 95, 188)
-    BUTTON_ACTIVE = (81, 54, 107)
+    BUTTON_HOVER = (88, 160, 200)  # Lighter navy blue for hover
+    BUTTON_ACTIVE = (7,15,43)   # Navy blue for active state
     TRANSPARENT = (0, 0, 0, 0)
 
 class ParticleSystem:
@@ -77,21 +77,9 @@ class AnimatedButton:
         scaled_rect.height *= self.scale
         scaled_rect.center = self.rect.center
         
-        # Draw button background with gradient
-        gradient_rect = scaled_rect.copy()
-        for i in range(scaled_rect.height):
-            progress = i / scaled_rect.height
-            if self.hover:
-                color = tuple(map(lambda x, y: int(x + (y - x) * progress),
-                                GameColors.BUTTON_ACTIVE,
-                                GameColors.BUTTON_HOVER))
-            else:
-                color = tuple(map(lambda x, y: int(x + (y - x) * progress),
-                                GameColors.PRIMARY,
-                                GameColors.SECONDARY))
-            pygame.draw.line(screen, color,
-                           (scaled_rect.left, scaled_rect.top + i),
-                           (scaled_rect.right, scaled_rect.top + i))
+        # Draw button with solid color
+        color = GameColors.BUTTON_ACTIVE if not self.hover else GameColors.BUTTON_HOVER
+        pygame.draw.rect(screen, color, scaled_rect, border_radius=10)
         
         # Draw text
         text_surf = self.font.render(self.text, True, GameColors.TEXT_PRIMARY)
@@ -128,18 +116,8 @@ class EnhancedGraphic(Graphic):
             )
     
     def home_draw(self):
-        # Create atmospheric background
+        # Create solid navy blue background
         self.screen.fill(GameColors.BACKGROUND)
-        
-        # Draw animated particles
-        self.particles.update(1/60)
-        for _ in range(2):
-            self.particles.create_particle(
-                random.randint(0, SCREEN_WIDTH),
-                random.randint(0, SCREEN_HEIGHT),
-                GameColors.ACCENT
-            )
-        self.particles.draw(self.screen)
         
         # Draw title
         title = self.victory.render("WUMPUS WORLD", True, GameColors.ACCENT)
@@ -154,7 +132,7 @@ class EnhancedGraphic(Graphic):
     
     def running_draw(self):
         self.screen.fill(GameColors.BACKGROUND)
-        self.map.draw(self.screen)
+        self.map.draw(self.screen, color=(135, 206, 235))  # Sky blue map
         
         # Animate score
         score = self.agent.get_score()
@@ -166,9 +144,9 @@ class EnhancedGraphic(Graphic):
         self._draw_hud()
         
     def _draw_hud(self):
-        # Score panel at the top right
+        # Score panel at the top right with navy blue background
         panel_rect = pygame.Rect(SCREEN_WIDTH - 250, 10, 240, 80)
-        pygame.draw.rect(self.screen, GameColors.PRIMARY, panel_rect, border_radius=10)
+        pygame.draw.rect(self.screen, GameColors.PRIMARY, panel_rect, border_radius=10)  # Navy blue
         pygame.draw.rect(self.screen, GameColors.ACCENT, panel_rect, 2, border_radius=10)
         
         score_text = f"SCORE: {int(self.score_animation['current']):,}"
@@ -176,32 +154,11 @@ class EnhancedGraphic(Graphic):
         score_rect = score_surf.get_rect(center=panel_rect.center)
         self.screen.blit(score_surf, score_rect)
         
-        # Status indicators
-        self._draw_status_indicators()
-        
     def _draw_status_indicators(self):
-        # Position directly below the score panel
-        indicators_rect = pygame.Rect(SCREEN_WIDTH - 250, 100, 240, 80)
-        pygame.draw.rect(self.screen, GameColors.PRIMARY, indicators_rect, border_radius=10)
-        pygame.draw.rect(self.screen, GameColors.ACCENT, indicators_rect, 2, border_radius=10)
+        pass  # Removed status indicators
         
-        # Adjust text position within the indicator rectangle
-        status_text = self.noti.render("STATUS: Active", True, GameColors.TEXT_SECONDARY)
-        text_pos = (indicators_rect.x + 10, indicators_rect.y + 20)
-        self.screen.blit(status_text, text_pos)
-    
     def win_draw(self):
         self.screen.fill(GameColors.BACKGROUND)
-        
-        # Create victory/defeat effects
-        for _ in range(5):
-            self.particles.create_particle(
-                random.randint(0, SCREEN_WIDTH),
-                random.randint(0, SCREEN_HEIGHT),
-                GameColors.ACCENT
-            )
-        self.particles.update(1/60)
-        self.particles.draw(self.screen)
         
         # Draw victory/defeat message
         if self.state == WIN:
@@ -213,14 +170,6 @@ class EnhancedGraphic(Graphic):
             
         text = self.victory.render(message, True, color)
         text_rect = text.get_rect(center=(SCREEN_WIDTH//2, SCREEN_HEIGHT//3))
-        
-        # Add glow effect
-        glow_surf = pygame.Surface(text.get_size(), pygame.SRCALPHA)
-        glow_color = (*color, 100)
-        glow_text = self.victory.render(message, True, glow_color)
-        for offset in [(2, 2), (-2, -2), (2, -2), (-2, 2)]:
-            glow_surf.blit(glow_text, offset)
-        self.screen.blit(glow_surf, text_rect)
         self.screen.blit(text, text_rect)
         
         # Draw animated score
@@ -245,10 +194,8 @@ class EnhancedGraphic(Graphic):
 def display_action(self, action: Algorithms.Action):
     # Add visual feedback particles for actions
     i, j = self.agent.get_pos()
-    # screen_x = j * CELL_SIZE + CELL_SIZE//2
-    # screen_y = i * CELL_SIZE + CELL_SIZE//2
-    screen_x = j * 2 + 2
-    screen_y = i * 2 + 2
+    screen_x = j * 70 + 40  # Adjusted to match cell center
+    screen_y = i * 70 + 40  # Adjusted to match cell center
     
     if action in [Algorithms.Action.MOVE_FORWARD, Algorithms.Action.GRAB_GOLD]:
         for _ in range(10):
@@ -256,5 +203,3 @@ def display_action(self, action: Algorithms.Action):
             
     # Call original display_action logic
     super().display_action(action)
-
-

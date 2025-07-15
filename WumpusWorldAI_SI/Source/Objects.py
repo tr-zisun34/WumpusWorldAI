@@ -28,7 +28,7 @@ class Pit:
 
     def update(self, screen, font, is_discovered):
         for i in range(self.size):
-            for j in range (self.size):
+            for j in range(self.size):
                 if self.noti[i][j] and is_discovered[i][j]:
                     text = font.render('Breeze', True, BLACK)
                     textRect = text.get_rect()
@@ -49,11 +49,14 @@ class Wumpus:
             self.wumpus_pos[x[i]][y[i]] = True
 
     def wumpus_kill(self, screen, font):
-        text = font.render('Killed a wumpus!!!', True, BLACK)
+        image_height = self.image.get_height()
+        base_y = 100  # Below scoreboard
+        text = font.render('Killed a Wumpus!!!', True, WHITE)
         textRect = text.get_rect()
-        textRect.center = self.pos
+        textRect.left = 715  # Start 10 pixels right of image left edge
+        textRect.top = base_y + image_height + 50  # 30 pixels below image
+        screen.blit(self.image, (800, base_y))  # Wumpus image
         screen.blit(text, textRect)
-        screen.blit(self.image, (800, 200))
         pygame.display.update()
 
     def wumpus_notification(self):
@@ -82,7 +85,7 @@ class Wumpus:
 
     def update(self, screen, font, is_discovered):
         for i in range(self.size):
-            for j in range (self.size):
+            for j in range(self.size):
                 if self.noti[i][j] and is_discovered[i][j]:
                     text = font.render('Stench', True, BLACK)
                     textRect = text.get_rect()
@@ -97,18 +100,23 @@ class Wumpus:
 class Gold:
     def __init__(self):
         self.image = pygame.image.load(IMG_GOLD).convert()
-        self.image = pygame.transform.scale(self.image, (150,300))
+        self.image = pygame.transform.scale(self.image, (150, 300))
         self.pos = (835, 100)
 
     def grab_gold(self, screen, font):
-        text = font.render('You found a gold!!!', True, BLACK)
+        image_height = self.image.get_height()
+        base_y = 100  # Below scoreboard
+        text = font.render('You found a Gold!!!', True, WHITE)
         textRect = text.get_rect()
-        textRect.center = self.pos
+        textRect.left = 715  # Start 10 pixels right of image left edge
+        textRect.top = base_y + image_height + 50  # 30 pixels below image
+        screen.blit(self.image, (725, base_y))  # Gold image
         screen.blit(text, textRect)
-        screen.blit(self.image, (750, 200))
-        text = font.render('Score + 1000', True, BLACK)
-        textRect.center = (900, 600)
-        screen.blit(text, textRect)
+        text2 = font.render('Bonus : 1000', True, WHITE)
+        textRect2 = text2.get_rect()
+        textRect2.left = 725 + 10  # Align with first line
+        textRect2.top = base_y + image_height + 100  # 30 pixels below first text
+        screen.blit(text2, textRect2)
         pygame.display.update()
 
 
@@ -153,6 +161,3 @@ class Arrow:
         j = 10 + (y + 1) * 70
         screen.blit(self.img_list[3], (i, j))
         pygame.display.update()
-
-
-

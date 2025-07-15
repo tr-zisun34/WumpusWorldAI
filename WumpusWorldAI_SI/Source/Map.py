@@ -13,13 +13,16 @@ class Map:
         self.is_discover = [[False for i in range(self.size)] for j in range(self.size)]
         self.is_discover[init_agent_pos[0] - 1][init_agent_pos[1] - 1] = True
 
-    def draw(self, screen):
+    def draw(self, screen, color=(135, 206, 235)):  # Default to sky blue
         x = self.space
         y = self.space
 
         for i in range(0, self.size):
             for j in range(0, self.size):
-                if(self.is_discover[i][j]):
+                rect = pygame.Rect(x, y, self.cell_size, self.cell_size)
+                # Draw background color
+                pygame.draw.rect(screen, color, rect)
+                if self.is_discover[i][j]:
                     screen.blit(self.discover_cell, (x, y))
                     x += self.space + self.cell_size
                 elif not self.is_discover[i][j]:
