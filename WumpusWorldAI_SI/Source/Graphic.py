@@ -355,4 +355,3 @@ class Graphic:
             raise TypeError("Error: " + self.display_action.__name__)
 
 
-
