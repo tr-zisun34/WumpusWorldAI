@@ -156,39 +156,3 @@ class Arrow:
 
 
 
-# import pygame
-
-# class Wumpus(pygame.sprite.Sprite):
-#     def __init__(self, x, y):
-#         super().__init__()
-#         self.x = x
-#         self.y = y
-#         self.alive = True
-#         # Assume image loading and other init logic here
-
-#     def wumpus_notification(self):
-#         # Existing notification logic
-#         pass
-
-#     def wumpus_killed(self, i, j):
-#         if (i, j) in [(self.x, self.y)]:
-#             self.alive = False
-
-#     def wumpus_kill(self, screen, font):
-#         if not self.alive:
-#             # Calculate text position based on Wumpus or agent position (using self.x, self.y as example)
-#             text_x = 40 + self.x * 70
-#             text_y = 40 + self.y * 70
-            
-#             # Check for HUD overlap (HUD is at SCREEN_WIDTH - 300, 40, width 260, height 140)
-#             hud_rect = pygame.Rect(SCREEN_WIDTH - 300, 40, 260, 140)
-#             text_surface = font.render("Wumpus killed", True, (70, 130, 180))  # Steel blue
-#             text_rect = text_surface.get_rect(topleft=(text_x, text_y))
-            
-#             # Reposition if overlapping with HUD
-#             if hud_rect.colliderect(text_rect):
-#                 text_x = max(20, SCREEN_WIDTH - 320 - text_rect.width)  # Shift left of HUD
-#                 text_y = min(text_y + 50, SCREEN_HEIGHT - 40 - text_rect.height)  # Move down if needed
-#                 text_rect.topleft = (text_x, text_y)
-            
-#             screen.blit(text_surface, text_rect)
