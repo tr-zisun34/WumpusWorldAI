@@ -27,10 +27,10 @@ IMG_HUNTER_LEFT = os.path.join(BASE_DIR, 'Assets', 'Images', 'hunter_left.png')
 IMG_HUNTER_UP = os.path.join(BASE_DIR, 'Assets', 'Images', 'hunter_up.png')
 IMG_HUNTER_DOWN = os.path.join(BASE_DIR, 'Assets', 'Images', 'hunter_down.png')
 
-IMG_ARROW_RIGHT = os.path.join(BASE_DIR, 'Assets', 'Images', 'arrow_right.png')
-IMG_ARROW_LEFT = os.path.join(BASE_DIR, 'Assets', 'Images', 'arrow_left.png')
-IMG_ARROW_UP = os.path.join(BASE_DIR, 'Assets', 'Images', 'arrow_up.png')
-IMG_ARROW_DOWN = os.path.join(BASE_DIR, 'Assets', 'Images', 'arrow_down.png')
+IMG_ARROW_RIGHT = os.path.join(BASE_DIR, 'Assets', 'Images', 'arrow_right.jpg')
+IMG_ARROW_LEFT = os.path.join(BASE_DIR, 'Assets', 'Images', 'arrow_left.jpg')
+IMG_ARROW_UP = os.path.join(BASE_DIR, 'Assets', 'Images', 'arrow_up.jpg')
+IMG_ARROW_DOWN = os.path.join(BASE_DIR, 'Assets', 'Images', 'arrow_down.jpg')
 
 # Map
 MAP_LIST = [
@@ -52,7 +52,7 @@ OUTPUT_LIST = [
 ]
 
 # Fonts
-FONT_MRSMONSTER = os.path.join(BASE_DIR, 'Assets', 'Fonts', 'mrsmonster.ttf')
+FONT_MRSMONSTER = os.path.join(BASE_DIR, 'Assets', 'Fonts', 'Swansong.otf')
 
 # Colors
 WHITE = (255, 255, 255)
