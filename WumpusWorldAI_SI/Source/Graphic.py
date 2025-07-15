@@ -25,7 +25,7 @@ class Graphic:
         self.map_i = 1
         self.mouse = None
         # Use absolute path for background image
-        bg_path = os.path.join(BASE_DIR, 'Assets', 'Images', 'win.jpg')
+        bg_path = os.path.join(BASE_DIR, 'Assets', 'Images', 'win.png')
         self.bg = pygame.image.load(bg_path).convert()
         self.bg = pygame.transform.scale(self.bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
         self.direct = 3
